@@ -1,0 +1,6 @@
+{
+  "tspegjs": {
+    "noTslint": true,
+    "customHeader": "// @ts-ignore\nimport stripIndent from 'strip-indent';\nimport { ASTKind, OperationType, node } from './ast';"
+  }
+}

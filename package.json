@@ -13,7 +13,7 @@
     "build": "4c build src",
     "prepublishOnly": "yarn run build",
     "tdd": "jest --watch",
-    "parser": "pegjs --optimize size -o src/parser.js grammar.pegjs ",
+    "parser": "pegjs --plugin ts-pegjs --extra-options-file config.pegjs.json --optimize size -o src/parser.ts grammar.pegjs ",
     "pretest": "yarn run parser",
     "test": "yarn lint && jest",
     "testonly": "jest",
@@ -31,11 +31,20 @@
     }
   },
   "lint-staged": {
-    "*": "yarn 4c lint --fix"
+    "!(__file_snapshots__/)*": "yarn 4c lint --fix"
   },
   "jest": {
-    "preset": "@4c/jest-preset",
-    "testEnvironment": "jsdom"
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": [
+      "./tests/setup.ts"
+    ],
+    "watchPathIgnorePatterns": [
+      "__file_snapshots__"
+    ]
+  },
+  "jest-runner-tsc": {
+    "tsconfigPath": "./tests/tsconfig.json"
   },
   "release": {
     "publishDir": "lib"
@@ -62,10 +71,16 @@
     "eslint-plugin-prettier": "^3.0.1",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
+    "jest-file-snapshot": "^0.3.8",
+    "jest-runner-tsc": "^1.6.0",
     "lint-staged": "^10.0.7",
     "nodemon": "^2.0.2",
     "pegjs": "^0.10.0",
     "prettier": "^1.15.3",
+    "ts-jest": "^25.2.1",
     "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "ts-pegjs": "^0.2.6"
   }
 }
